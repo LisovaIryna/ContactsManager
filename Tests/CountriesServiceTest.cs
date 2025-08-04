@@ -125,4 +125,37 @@ public class CountriesServiceTest
     }
 
     #endregion
+
+    #region GetCountryByCountryID
+
+    [Fact]
+    // If we supply null as CountryID, it should return null as CountryResponse
+    public void GetCountryByCountryID_NullCountryID()
+    {
+        // Arrange
+        Guid? countryID = null;
+
+        // Act
+        CountryResponse? country_response_from_get_method = _countriesService.GetCountryByCountryID(countryID);
+
+        // Assert
+        Assert.Null(country_response_from_get_method);  
+    }
+
+    [Fact]
+    // If we supply a valid country id, it should return the matching country details as CountryResponse object
+    public void GetCountryByCountryID_ValidCountryID()
+    {
+        // Arrange
+        CountryAddRequest? country_add_request = new() { CountryName = "China" };
+        CountryResponse cpuntry_response_from_add = _countriesService.AddCountry(country_add_request);
+
+        // Act
+        CountryResponse? country_response_from_get = _countriesService.GetCountryByCountryID(cpuntry_response_from_add.CountryID);
+
+        // Assert
+        Assert.Equal(cpuntry_response_from_add, country_response_from_get);
+    }
+
+    #endregion
 }
