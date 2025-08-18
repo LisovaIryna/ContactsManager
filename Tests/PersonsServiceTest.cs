@@ -502,7 +502,10 @@ public class PersonsServiceTest
         PersonAddRequest person_add_request = new()
         {
             PersonName = "John",
-            CountryID = country_response_from_add.CountryID
+            CountryID = country_response_from_add.CountryID,
+            Email = "john@example.com",
+            Address = "address...",
+            Gender = GenderOptions.Male
         };
         PersonResponse person_response_from_add = _personService.AddPerson(person_add_request);
 

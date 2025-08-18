@@ -37,7 +37,7 @@ public class PersonsService : IPersonsService
         }
 
         // Model validation
-        ValidationHelper.ModelCalidation(personAddRequest);
+        ValidationHelper.ModelValidation(personAddRequest);
 
         // convert personAddRequest into Person type
         Person person = personAddRequest.ToPerson();
@@ -139,6 +139,26 @@ public class PersonsService : IPersonsService
 
     public PersonResponse UpdatePerson(PersonUpdateRequest? personUpdateRequest)
     {
-        throw new NotImplementedException();
+        if (personUpdateRequest == null)
+            throw new ArgumentNullException(nameof(Person));
+
+        // validation
+        ValidationHelper.ModelValidation(personUpdateRequest);
+
+        // get matching person object to update
+        Person matchingPerson = _persons.FirstOrDefault(temp => temp.PersonID == personUpdateRequest.PersonID);
+        if (matchingPerson == null)
+            throw new ArgumentException("Given person id doesn't exist");
+
+        // update all details
+        matchingPerson.PersonName = personUpdateRequest.PersonName;
+        matchingPerson.Email = personUpdateRequest.Email;
+        matchingPerson.DateOfBirth = personUpdateRequest.DateOfBirth;
+        matchingPerson.Gender = personUpdateRequest.Gender.ToString();
+        matchingPerson.CountryID = personUpdateRequest.CountryID;
+        matchingPerson.Address = personUpdateRequest.Address;
+        matchingPerson.ReceiveNewsLetters = personUpdateRequest.ReceiveNewsLetters;
+
+        return matchingPerson.ToPersonResponse();
     }
 }
