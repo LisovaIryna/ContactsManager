@@ -56,7 +56,7 @@ public interface IPersonsService
     /// <summary>
     /// Deletes a person based on the given person if
     /// </summary>
-    /// <param name="PersonID">PersonID to delete</param>
+    /// <param name="personID">PersonID to delete</param>
     /// <returns>Returns true, it the deletion is successful; otherwise false</returns>
-    bool DeletePerson(Guid? PersonID);
+    bool DeletePerson(Guid? personID);
 }
