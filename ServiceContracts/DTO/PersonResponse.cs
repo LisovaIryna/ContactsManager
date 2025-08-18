@@ -56,6 +56,20 @@ public class PersonResponse
             $" Gender: {Gender}, Country ID: {CountryID}, Country: {Country}," +
             $" Address: {Address}, Receive News Letters: {ReceiveNewsLetters}";
     }
+
+    public PersonUpdateRequest ToPersonUpdateRequest()
+    {
+        return new PersonUpdateRequest()
+        {
+            PersonID = PersonID,
+            PersonName = PersonName,
+            Email = Email,
+            DateOfBirth = DateOfBirth,
+            Gender = (GenderOptions)Enum.Parse(typeof(GenderOptions), Gender, true),
+            Address = Address,
+            ReceiveNewsLetters = ReceiveNewsLetters
+        };
+    }
 }
 
 public static class PersonExtensions
