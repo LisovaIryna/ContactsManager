@@ -20,7 +20,7 @@ public class CountriesService : ICountriesService
                 new Country() { CountryID = Guid.Parse("334A5068-A3F6-4E3A-BFCC-6C34A389E9CE"), CountryName = "USA" },
                 new Country() { CountryID = Guid.Parse("9201EB38-3D7E-439E-A879-7A5CE598A084"), CountryName = "Canada" },
                 new Country() { CountryID = Guid.Parse("A31F0E7E-E4F6-4594-86B7-B415F6FC2983"), CountryName = "UK" },
-                new Country() { CountryID = Guid.Parse("F18A5142-1217-49AC-B0BB-FD0D10AC3956"), CountryName = "India" },
+                new Country() { CountryID = Guid.Parse("92142B42-121B-467E-900E-1397E0F1F689"), CountryName = "India" },
                 new Country() { CountryID = Guid.Parse("CB898F97-4A05-4487-AD12-5E46EA17D625"), CountryName = "Australia" }
             });
         }

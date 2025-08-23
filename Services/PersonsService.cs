@@ -84,14 +84,14 @@ public class PersonsService : IPersonsService
 
             _persons.Add(new Person()
             {
-                PersonID = Guid.Parse("3BA8DD8-309D-48A1-B594-5993A9541C52"),
+                PersonID = Guid.Parse("B8741297-817E-485B-8FF3-0006CA98530A"),
                 PersonName = "Katharine",
                 Email = "kgoding5@ucoz.com",
                 DateOfBirth = DateTime.Parse("1999-07-08"),
                 Gender = "Female",
                 Address = "04521 Mockingbird Trail",
                 ReceiveNewsLetters = true,
-                CountryID = Guid.Parse("F18A5142-1217-49AC-B0BB-FD0D10AC3956")
+                CountryID = Guid.Parse("92142B42-121B-467E-900E-1397E0F1F689")
             });
 
             _persons.Add(new Person()
