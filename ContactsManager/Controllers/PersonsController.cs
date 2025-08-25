@@ -9,11 +9,13 @@ public class PersonsController : Controller
 {
     // private fields
     private readonly IPersonsService _personsService;
+    private readonly ICountriesService _countriesService;
 
     // constructor
-    public PersonsController(IPersonsService personsService)
+    public PersonsController(IPersonsService personsService, ICountriesService countriesService)
     {
         _personsService = personsService;
+        _countriesService = countriesService;
     }
 
     [Route("persons/index")]
@@ -40,5 +42,34 @@ public class PersonsController : Controller
         ViewBag.CurrentSortOrder = sortOrder.ToString();
 
         return View(sortedPersons); // Views/Persons/Index.cshtml
+    }
+
+    // Executes when the user clicks on "Create Person" hyperlink (while opening the create view)
+    [Route("persons/create")]
+    [HttpGet]
+    public IActionResult Create()
+    {
+        List<CountryResponse> countries = _countriesService.GetAllCountries();
+        ViewBag.Countries = countries;
+        return View();
+    }
+
+    [HttpPost]
+    [Route("persons/create")]
+    public IActionResult Create(PersonAddRequest personAddRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            List<CountryResponse> countries = _countriesService.GetAllCountries();
+            ViewBag.Countries = countries;
+            ViewBag.Errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).ToList();
+            return View();
+        }
+        
+        // call the service method
+        PersonResponse personResponse = _personsService.AddPerson(personAddRequest);
+        
+        // navigate to Index() action method (it makes another get request to "persons/index"
+        return RedirectToAction("Index", "Persons");
     }
 }
