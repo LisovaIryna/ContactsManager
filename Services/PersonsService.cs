@@ -172,7 +172,6 @@ public class PersonsService : IPersonsService
         _persons.Add(person);
 
         // convert the Person object into PersonResponse type
-
         return ConvertPersonToPersonResponse(person);
     }
 
@@ -269,7 +268,7 @@ public class PersonsService : IPersonsService
         ValidationHelper.ModelValidation(personUpdateRequest);
 
         // get matching person object to update
-        Person matchingPerson = _persons.FirstOrDefault(temp => temp.PersonID == personUpdateRequest.PersonID);
+        Person? matchingPerson = _persons.FirstOrDefault(temp => temp.PersonID == personUpdateRequest.PersonID);
         if (matchingPerson == null)
             throw new ArgumentException("Given person id doesn't exist");
 

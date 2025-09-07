@@ -34,7 +34,7 @@ public class CountriesService : ICountriesService
 
         // Validation: CountryName can't be null
         if (countryAddRequest.CountryName == null)
-            throw new ArgumentException(nameof(countryAddRequest));
+            throw new ArgumentException(nameof(countryAddRequest.CountryName));
 
         // Validation: CountryName can't be duplicate
         if (_countries.Where(temp => temp.CountryName == countryAddRequest.CountryName).Count() > 0)

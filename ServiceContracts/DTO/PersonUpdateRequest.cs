@@ -18,7 +18,7 @@ public class PersonUpdateRequest
     public string? PersonName { get; set; }
 
     [Required(ErrorMessage = "Email can't be blank")]
-    [EmailAddress(ErrorMessage = "Enail value should be a valid email")]
+    [EmailAddress(ErrorMessage = "Email value should be a valid email")]
     public string? Email { get; set; }
 
     public DateTime? DateOfBirth { get; set; }

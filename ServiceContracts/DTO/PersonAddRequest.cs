@@ -14,7 +14,7 @@ public class PersonAddRequest
     public string? PersonName { get; set; }
 
     [Required(ErrorMessage = "Email can't be blank")]
-    [EmailAddress(ErrorMessage = "Enail value should be a valid email")]
+    [EmailAddress(ErrorMessage = "Email value should be a valid email")]
     [DataType(DataType.EmailAddress)]
     public string? Email { get; set; }
 
