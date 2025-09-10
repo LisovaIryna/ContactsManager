@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Localization;
 using ServiceContracts;
 using Services;
 using System.Globalization;
+using Microsoft.EntityFrameworkCore;
+using Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -9,6 +11,11 @@ builder.Services.AddControllersWithViews();
 // add services into IoC container
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IPersonsService, PersonsService>();
+builder.Services.AddDbContext<PersonsDbContext>(
+    options =>
+    {
+        options.UseSqlServer();
+    });
 
 var app = builder.Build();
 
