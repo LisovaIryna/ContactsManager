@@ -8,7 +8,6 @@ namespace Entities
     {
         public PersonsDbContext(DbContextOptions options) : base(options)
         {
-
         }
 
         public DbSet<Country> Countries { get; set; }
@@ -34,6 +33,11 @@ namespace Entities
 
             foreach (Person person in persons)
                 modelBuilder.Entity<Person>().HasData(person);
+        }
+
+        public List<Person> sp_GetAllPersons()
+        {
+            return Persons.FromSqlRaw("EXECUTE [dbo].[GetAllPersons]").ToList();
         }
     }
 }
