@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities;
 
@@ -34,4 +35,7 @@ public class Person
 
     //[Column("TaxIdentificationNumber", TypeName = "varchar(8)")]
     public string? TIN { get; set; }
+
+    [ForeignKey("CountryID")]
+    public virtual Country? Country { get; set; }
 }
