@@ -12,6 +12,7 @@ public class Person
     public Guid PersonID { get; set; }
 
     [StringLength(40)] // nvarchar(40)
+    //[Required]
     public string? PersonName { get; set; }
 
     [StringLength(40)]
@@ -31,5 +32,6 @@ public class Person
     // bit
     public bool ReceiveNewsLetters { get; set; }
 
+    //[Column("TaxIdentificationNumber", TypeName = "varchar(8)")]
     public string? TIN { get; set; }
 }
