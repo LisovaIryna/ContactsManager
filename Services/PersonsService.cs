@@ -6,6 +6,10 @@ using System.ComponentModel.DataAnnotations;
 using Services.Helpers;
 using ServiceContracts.Enums;
 using Microsoft.EntityFrameworkCore;
+using CsvHelper;
+using System.Globalization;
+using System.IO;
+using CsvHelper.Configuration;
 
 namespace Services;
 
@@ -181,5 +185,47 @@ public class PersonsService : IPersonsService
         await _db.SaveChangesAsync();
 
         return true;
+    }
+
+    public async Task<MemoryStream> GetPersonsCSV()
+    {
+        MemoryStream memoryStream = new();
+        StreamWriter streamWriter = new(memoryStream);
+
+        CsvConfiguration csvConfiguration = new(CultureInfo.InvariantCulture);
+        CsvWriter csvWriter = new(streamWriter, csvConfiguration);
+
+        // PersonName, Email, DateOfBirth, Age, Country, Address, ReceiveNewsLetters
+        csvWriter.WriteField(nameof(PersonResponse.PersonName));
+        csvWriter.WriteField(nameof(PersonResponse.Email));
+        csvWriter.WriteField(nameof(PersonResponse.DateOfBirth));
+        csvWriter.WriteField(nameof(PersonResponse.Age));
+        csvWriter.WriteField(nameof(PersonResponse.Country));
+        csvWriter.WriteField(nameof(PersonResponse.Address));
+        csvWriter.WriteField(nameof(PersonResponse.ReceiveNewsLetters));
+        csvWriter.NextRecord();
+
+        List<PersonResponse> persons = _db.Persons
+            .Include("Country")
+            .Select(temp => temp.ToPersonResponse()).ToList();
+
+        foreach (PersonResponse person in persons)
+        {
+            csvWriter.WriteField(person.PersonName);
+            csvWriter.WriteField(person.Email);
+            if (person.DateOfBirth.HasValue)
+                csvWriter.WriteField(person.DateOfBirth.Value.ToString("yyyy-MM-dd"));
+            else
+                csvWriter.WriteField("");
+            csvWriter.WriteField(person.Age);
+            csvWriter.WriteField(person.Country);
+            csvWriter.WriteField(person.Address);
+            csvWriter.WriteField(person.ReceiveNewsLetters);
+            csvWriter.NextRecord();
+            csvWriter.Flush();
+        }
+
+        memoryStream.Position = 0;
+        return memoryStream;
     }
 }
