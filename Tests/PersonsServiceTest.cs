@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Xunit;
-using ServiceContracts;
-using Entities;
-using ServiceContracts.DTO;
-using Services;
-using ServiceContracts.Enums;
-using Xunit.Abstractions;
+﻿using Entities;
+using EntityFrameworkCoreMock;
 using Microsoft.EntityFrameworkCore;
+using ServiceContracts;
+using ServiceContracts.DTO;
+using ServiceContracts.Enums;
+using Services;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Xunit;
+using Xunit.Abstractions;
 
 namespace Tests;
 
@@ -22,8 +23,19 @@ public class PersonsServiceTest
     // constructor
     public PersonsServiceTest(ITestOutputHelper testOutputHelper)
     {
-        _countriesService = new CountriesService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options));
-        _personService = new PersonsService(new PersonsDbContext(new DbContextOptionsBuilder<PersonsDbContext>().Options), _countriesService);
+        var countriesInitialData = new List<Country>() { };
+        var personsInitialData = new List<Person>() { };
+
+        DbContextMock<ApplicationDbContext> dbContextMock = new(new DbContextOptionsBuilder<ApplicationDbContext>().Options);
+
+        ApplicationDbContext dbContext = dbContextMock.Object;
+
+        dbContextMock.CreateDbSetMock(temp => temp.Countries, countriesInitialData);
+        dbContextMock.CreateDbSetMock(temp => temp.Persons, personsInitialData);
+
+        _countriesService = new CountriesService(dbContext);
+        _personService = new PersonsService(dbContext, _countriesService);
+
         _testOutputHelper = testOutputHelper;
     }
 

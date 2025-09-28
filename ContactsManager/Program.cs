@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 // add services into IoC container
 builder.Services.AddScoped<ICountriesService, CountriesService>();
 builder.Services.AddScoped<IPersonsService, PersonsService>();
-builder.Services.AddDbContext<PersonsDbContext>(
+builder.Services.AddDbContext<ApplicationDbContext>(
     options =>
     {
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
