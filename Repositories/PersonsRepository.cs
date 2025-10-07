@@ -51,7 +51,7 @@ public class PersonsRepository : IPersonsRepository
 
     public async Task<Person> UpdatePerson(Person person)
     {
-        Person matchingPerson = await _db.Persons.FirstAsync(temp => temp.PersonID == person.PersonID);
+        Person? matchingPerson = await _db.Persons.FirstAsync(temp => temp.PersonID == person.PersonID);
 
         if (matchingPerson == null)
             return person;
