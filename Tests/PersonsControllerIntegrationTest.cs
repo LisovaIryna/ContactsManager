@@ -6,6 +6,9 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Fizzler;
+using Fizzler.Systems.HtmlAgilityPack;
+using HtmlAgilityPack;
 
 namespace Tests;
 
@@ -30,6 +33,13 @@ public class PersonsControllerIntegrationTest : IClassFixture<CustomWebApplicati
 
         // Assert
         response.IsSuccessStatusCode.Should().BeTrue(); // 2xx
+
+        string responseBody = await response.Content.ReadAsStringAsync();
+
+        HtmlDocument html = new();
+        html.LoadHtml(responseBody);
+        var document = html.DocumentNode;
+        document.QuerySelectorAll("table.persons").Should().NotBeNull();
     }
 
     #endregion
