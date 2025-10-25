@@ -34,6 +34,12 @@ if (builder.Environment.IsEnvironment("Test") == false)
     });
 }
 
+builder.Services.AddHttpLogging(options =>
+{
+    options.LoggingFields = Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestProperties |
+    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponsePropertiesAndHeaders;
+});
+
 // Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=PersonsDatabase;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False
 
 var app = builder.Build();
