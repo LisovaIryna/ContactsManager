@@ -43,6 +43,8 @@ builder.Services.AddHttpLogging(options =>
 
 var app = builder.Build();
 
+app.UseSerilogRequestLogging();
+
 var cultureInfo = new CultureInfo("en-US");
 var localizationOptions = new RequestLocalizationOptions
 {
