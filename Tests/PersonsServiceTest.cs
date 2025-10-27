@@ -15,6 +15,8 @@ using FluentAssertions;
 using RepositoryContracts;
 using Moq;
 using System.Linq.Expressions;
+using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace Tests;
 
@@ -34,7 +36,10 @@ public class PersonsServiceTest
         _personsRepositoryMock = new();
         _personsRepository = _personsRepositoryMock.Object;
 
-        _personService = new PersonsService(_personsRepository);
+        var diagnosticContextMock = new Mock<IDiagnosticContext>();
+        var loggerMock = new Mock<ILogger<PersonsService>>();
+
+        _personService = new PersonsService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
 
         _testOutputHelper = testOutputHelper;
     }
