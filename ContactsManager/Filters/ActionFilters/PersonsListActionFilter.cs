@@ -16,7 +16,7 @@ public class PersonsListActionFilter : IActionFilter
     public void OnActionExecuted(ActionExecutedContext context)
     {
         // To do: add after logic here
-        _logger.LogInformation("PersonsListActionFilter.OnActionExecuted method");
+        _logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter), nameof(OnActionExecuted));
 
         PersonsController personsController = (PersonsController)context.Controller;
 
@@ -61,7 +61,7 @@ public class PersonsListActionFilter : IActionFilter
         context.HttpContext.Items["arguments"] = context.ActionArguments;
 
         // To do: add before logic here
-        _logger.LogInformation("PersonsListActionFilter.OnActionExecuting method");
+        _logger.LogInformation("{FilterName}.{MethodName}", nameof(PersonsListActionFilter), nameof(OnActionExecuting));
 
         if (context.ActionArguments.ContainsKey("searchBy"))
         {
