@@ -10,7 +10,7 @@ using System.IO;
 namespace ContactsManager.Controllers;
 
 [Route("[controller]")]
-[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Controller", "My-Value-From-Controller" })]
+[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Controller", "My-Value-From-Controller" }, Order = 2)]
 public class PersonsController : Controller
 {
     // private fields
@@ -30,7 +30,7 @@ public class PersonsController : Controller
     [Route("[action]")]
     [Route("/")]
     [TypeFilter(typeof(PersonsListActionFilter))]
-    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action" })]
+    [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action" }, Order = 1)]
     public async Task<IActionResult> Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrder = SortOrderOptions.ASC)
     {
         _logger.LogInformation("Index action method of PersonsController");
