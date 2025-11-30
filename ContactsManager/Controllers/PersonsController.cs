@@ -1,4 +1,5 @@
 ﻿using ContactsManager.Filters.ActionFilters;
+using ContactsManager.Filters.ResourceFilters;
 using ContactsManager.Filters.ResultFilters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -69,6 +70,7 @@ public class PersonsController : Controller
     // Url: persons/create
     [Route("[action]")]
     [TypeFilter(typeof(PersonCreateAndEditPostActionFilter))]
+    [TypeFilter(typeof(FeatureDisabledResourceFilter), Arguments = new object[] { false })]
     public async Task<IActionResult> Create(PersonAddRequest personRequest)
     {        
         // call the service method
