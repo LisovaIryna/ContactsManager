@@ -1,4 +1,5 @@
-﻿using ContactsManager.Filters.ActionFilters;
+﻿using ContactsManager.Filters;
+using ContactsManager.Filters.ActionFilters;
 using ContactsManager.Filters.AuthorizationFilters;
 using ContactsManager.Filters.ExceptionFilters;
 using ContactsManager.Filters.ResourceFilters;
@@ -15,6 +16,7 @@ namespace ContactsManager.Controllers;
 [Route("[controller]")]
 [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Controller", "My-Value-From-Controller", 3}, Order = 3)]
 [TypeFilter(typeof(HandleExceptionFilter))]
+[TypeFilter(typeof(PersonsAlwaysRunResultFilter))]
 public class PersonsController : Controller
 {
     // private fields
@@ -36,6 +38,7 @@ public class PersonsController : Controller
     [TypeFilter(typeof(PersonsListActionFilter), Order = 4)]
     [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action", 1}, Order = 1)]
     [TypeFilter(typeof(PersonsListResultFilter))]
+    [SkipFilter]
     public async Task<IActionResult> Index(string searchBy, string? searchString, string sortBy = nameof(PersonResponse.PersonName), SortOrderOptions sortOrder = SortOrderOptions.ASC)
     {
         _logger.LogInformation("Index action method of PersonsController");
@@ -110,7 +113,6 @@ public class PersonsController : Controller
     [Route("[action]/{personID}")]
     [TypeFilter(typeof(PersonCreateAndEditPostActionFilter))]
     [TypeFilter(typeof(TokenAuthorizationFilter))]
-    [TypeFilter(typeof(PersonsAlwaysRunResultFilter))]
     public async Task<IActionResult> Edit(PersonUpdateRequest personRequest)
     {
         PersonResponse? personResponse = await _personsService.GetPersonByPersonID(personRequest.PersonID);
