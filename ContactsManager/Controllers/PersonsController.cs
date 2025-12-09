@@ -35,7 +35,7 @@ public class PersonsController : Controller
     // Url: persons/index
     [Route("[action]")]
     [Route("/")]
-    [TypeFilter(typeof(PersonsListActionFilter), Order = 4)]
+    [ServiceFilter(typeof(PersonsListActionFilter), Order = 4)]
     [TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Action", "My-Value-From-Action", 1}, Order = 1)]
     [TypeFilter(typeof(PersonsListResultFilter))]
     [SkipFilter]
