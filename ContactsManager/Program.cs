@@ -9,6 +9,7 @@ using Repositories;
 using Serilog;
 using ContactsManager.Filters.ActionFilters;
 using ContactsManager;
+using ContactsManager.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +24,6 @@ builder.Services.ConfigureServices(builder.Configuration, builder.Environment);
 
 var app = builder.Build();
 
-app.UseSerilogRequestLogging();
-
 var cultureInfo = new CultureInfo("en-US");
 var localizationOptions = new RequestLocalizationOptions
 {
@@ -38,6 +37,12 @@ if (builder.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandlingMiddleware();
+}
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpLogging();
 

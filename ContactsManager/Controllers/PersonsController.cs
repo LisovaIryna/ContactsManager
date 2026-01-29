@@ -16,7 +16,7 @@ namespace ContactsManager.Controllers;
 [Route("[controller]")]
 //[TypeFilter(typeof(ResponseHeaderActionFilter), Arguments = new object[] { "My-Key-From-Controller", "My-Value-From-Controller", 3}, Order = 3)]
 [ResponseHeaderFilterFactory("My-Key-From-Controller", "My-Value-From-Controller", 3)]
-[TypeFilter(typeof(HandleExceptionFilter))]
+//[TypeFilter(typeof(HandleExceptionFilter))]
 [TypeFilter(typeof(PersonsAlwaysRunResultFilter))]
 public class PersonsController : Controller
 {
