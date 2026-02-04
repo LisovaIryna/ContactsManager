@@ -123,7 +123,7 @@ public class PersonsController : Controller
             return RedirectToAction("Index");
         }
 
-        personRequest.PersonID = Guid.NewGuid();
+        //personRequest.PersonID = Guid.NewGuid();
         PersonResponse updatedPerson = await _personsService.UpdatePerson(personRequest);
         return RedirectToAction("Index");
     }
