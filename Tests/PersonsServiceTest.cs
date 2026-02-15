@@ -23,7 +23,7 @@ namespace Tests;
 public class PersonsServiceTest
 {
     // private fields
-    private readonly IPersonsService _personService;
+    private readonly IPersonsSorterService _personService;
     private readonly Mock<IPersonsRepository> _personsRepositoryMock;
     private readonly IPersonsRepository _personsRepository;
     private readonly ITestOutputHelper _testOutputHelper;
@@ -37,7 +37,7 @@ public class PersonsServiceTest
         _personsRepository = _personsRepositoryMock.Object;
 
         var diagnosticContextMock = new Mock<IDiagnosticContext>();
-        var loggerMock = new Mock<ILogger<PersonsService>>();
+        var loggerMock = new Mock<ILogger<PersonsGetterService>>();
 
         _personService = new PersonsService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
 

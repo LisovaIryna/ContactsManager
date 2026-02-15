@@ -17,11 +17,11 @@ namespace Tests
 {
     public class PersonsControllerTest
     {
-        private readonly IPersonsService _personsService;
+        private readonly IPersonsSorterService _personsService;
         private readonly ICountriesService _countriesService;
         private readonly ILogger<PersonsController> _logger;
         private readonly Mock<ICountriesService> _countriesServiceMock;
-        private readonly Mock<IPersonsService> _personsServiceMock;
+        private readonly Mock<IPersonsSorterService> _personsServiceMock;
         private readonly Mock<ILogger<PersonsController>> _loggerMock;
         private readonly IFixture _fixture;
 
