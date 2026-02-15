@@ -32,7 +32,11 @@ public static class ConfigureServicesExtension
         services.AddScoped<ICountriesRepository, CountriesRepository>();
         services.AddScoped<IPersonsRepository, PersonsRepository>();
         services.AddScoped<ICountriesService, CountriesService>();
-        services.AddScoped<IPersonsSorterService, PersonsGetterService>();
+        services.AddScoped<IPersonsGetterService, PersonsGetterService>();
+        services.AddScoped<IPersonsAdderService, PersonsAdderService>();
+        services.AddScoped<IPersonsUpdaterService, PersonsUpdaterService>();
+        services.AddScoped<IPersonsDeleterService, PersonsDeleterService>();
+        services.AddScoped<IPersonsSorterService, PersonsSorterService>();
 
         if (environment.IsEnvironment("Test") == false)
         {

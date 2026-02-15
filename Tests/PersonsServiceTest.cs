@@ -1,6 +1,4 @@
 ﻿using Entities;
-using EntityFrameworkCoreMock;
-using Microsoft.EntityFrameworkCore;
 using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
@@ -23,7 +21,11 @@ namespace Tests;
 public class PersonsServiceTest
 {
     // private fields
-    private readonly IPersonsSorterService _personService;
+    private readonly IPersonsGetterService _personsGetterService;
+    private readonly IPersonsAdderService _personsAdderService;
+    private readonly IPersonsUpdaterService _personsUpdaterService;
+    private readonly IPersonsDeleterService _personsDeleterService;
+    private readonly IPersonsSorterService _personsSorterService;
     private readonly Mock<IPersonsRepository> _personsRepositoryMock;
     private readonly IPersonsRepository _personsRepository;
     private readonly ITestOutputHelper _testOutputHelper;
@@ -39,7 +41,11 @@ public class PersonsServiceTest
         var diagnosticContextMock = new Mock<IDiagnosticContext>();
         var loggerMock = new Mock<ILogger<PersonsGetterService>>();
 
-        _personService = new PersonsService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+        _personsGetterService = new PersonsGetterService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+        _personsAdderService = new PersonsAdderService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+        _personsUpdaterService = new PersonsUpdaterService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+        _personsDeleterService = new PersonsDeleterService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
+        _personsSorterService = new PersonsSorterService(_personsRepository, loggerMock.Object, diagnosticContextMock.Object);
 
         _testOutputHelper = testOutputHelper;
     }
@@ -57,7 +63,7 @@ public class PersonsServiceTest
         Func<Task> action = async () =>
         {
             // Act
-            await _personService.AddPerson(personAddRequest);
+            await _personsAdderService.AddPerson(personAddRequest);
         };
         await action.Should().ThrowAsync<ArgumentNullException>();
     }
@@ -81,7 +87,7 @@ public class PersonsServiceTest
         Func<Task> action = async () =>
         {
             // Act
-            await _personService.AddPerson(personAddRequest);
+            await _personsAdderService.AddPerson(personAddRequest);
         };
         await action.Should().ThrowAsync<ArgumentException>();
     }
@@ -104,7 +110,7 @@ public class PersonsServiceTest
             .ReturnsAsync(new Person());
 
         // Act
-        PersonResponse person_response_from_add = await _personService.AddPerson(personAddRequest);
+        PersonResponse person_response_from_add = await _personsAdderService.AddPerson(personAddRequest);
         person_response_expected.PersonID = person_response_from_add.PersonID;
 
         // Assert
@@ -124,7 +130,7 @@ public class PersonsServiceTest
         Guid? personID = null;
 
         // Act
-        PersonResponse? person_response_from_get = await _personService.GetPersonByPersonID(personID);
+        PersonResponse? person_response_from_get = await _personsGetterService.GetPersonByPersonID(personID);
 
         // Assert
         person_response_from_get.Should().BeNull();
@@ -145,7 +151,7 @@ public class PersonsServiceTest
             .ReturnsAsync(person);
 
         // Act
-        PersonResponse? person_response_from_get = await _personService.GetPersonByPersonID(person.PersonID);
+        PersonResponse? person_response_from_get = await _personsGetterService.GetPersonByPersonID(person.PersonID);
 
         // Assert
         person_response_from_get.Should().Be(person_response_expected);
@@ -165,7 +171,7 @@ public class PersonsServiceTest
             .ReturnsAsync(persons);
 
         // Act
-        List<PersonResponse> persons_from_get = await _personService.GetAllPersons();
+        List<PersonResponse> persons_from_get = await _personsGetterService.GetAllPersons();
 
         // Assert
         persons_from_get.Should().BeEmpty();
@@ -205,7 +211,7 @@ public class PersonsServiceTest
             .ReturnsAsync(persons);
 
         // Act
-        List<PersonResponse> person_list_from_get = await _personService.GetAllPersons();
+        List<PersonResponse> person_list_from_get = await _personsGetterService.GetAllPersons();
 
         // print person_list_from_get
         _testOutputHelper.WriteLine("Actual:");
@@ -255,7 +261,7 @@ public class PersonsServiceTest
             .ReturnsAsync(persons);
 
         // Act
-        List<PersonResponse> person_list_from_search = await _personService.GetFilteredPersons(nameof(Person.PersonName), "");
+        List<PersonResponse> person_list_from_search = await _personsGetterService.GetFilteredPersons(nameof(Person.PersonName), "");
 
         // print person_list_from_get
         _testOutputHelper.WriteLine("Actual:");
@@ -301,7 +307,7 @@ public class PersonsServiceTest
             .ReturnsAsync(persons);
 
         // Act
-        List<PersonResponse> person_list_from_search = await _personService.GetFilteredPersons(nameof(Person.PersonName), "sa");
+        List<PersonResponse> person_list_from_search = await _personsGetterService.GetFilteredPersons(nameof(Person.PersonName), "sa");
 
         // print person_list_from_get
         _testOutputHelper.WriteLine("Actual:");
@@ -350,10 +356,10 @@ public class PersonsServiceTest
             _testOutputHelper.WriteLine(person_response_from_add.ToString());
         }
 
-        List<PersonResponse> allPersons = await _personService.GetAllPersons();
+        List<PersonResponse> allPersons = await _personsGetterService.GetAllPersons();
 
         // Act
-        List<PersonResponse> person_list_from_sort = await _personService.GetSortedPersons(allPersons, nameof(Person.PersonName), SortOrderOptions.DESC);
+        List<PersonResponse> person_list_from_sort = await _personsSorterService.GetSortedPersons(allPersons, nameof(Person.PersonName), SortOrderOptions.DESC);
 
         // print person_list_from_get
         _testOutputHelper.WriteLine("Actual:");
@@ -380,7 +386,7 @@ public class PersonsServiceTest
         // Act
         Func<Task> action = async () =>
         {
-            await _personService.UpdatePerson(person_update_request);
+            await _personsUpdaterService.UpdatePerson(person_update_request);
         };
 
         // Assert
@@ -397,7 +403,7 @@ public class PersonsServiceTest
         // Act
         Func<Task> action = async () =>
         {
-            await _personService.UpdatePerson(person_update_request);
+            await _personsUpdaterService.UpdatePerson(person_update_request);
         };
 
         // Assert
@@ -422,7 +428,7 @@ public class PersonsServiceTest
         // Act
         var action = async () =>
         {
-            await _personService.UpdatePerson(person_update_request);
+            await _personsUpdaterService.UpdatePerson(person_update_request);
         };
 
         // Assert
@@ -449,7 +455,7 @@ public class PersonsServiceTest
             .ReturnsAsync(person);
 
         // Act
-        PersonResponse person_response_from_update = await _personService.UpdatePerson(person_update_request);
+        PersonResponse person_response_from_update = await _personsUpdaterService.UpdatePerson(person_update_request);
 
         // Assert
         person_response_from_update.Should().Be(person_response_expected);
@@ -476,7 +482,7 @@ public class PersonsServiceTest
             .ReturnsAsync(person);
 
         // Act
-        bool isDeleted = await _personService.DeletePerson(person.PersonID);
+        bool isDeleted = await _personsDeleterService.DeletePerson(person.PersonID);
 
         // Assert
         isDeleted.Should().BeTrue();
@@ -487,7 +493,7 @@ public class PersonsServiceTest
     public async Task DeletePerson_InvalidPersonID()
     {
         // Act
-        bool isDeleted = await _personService.DeletePerson(Guid.NewGuid());
+        bool isDeleted = await _personsDeleterService.DeletePerson(Guid.NewGuid());
 
         // Assert
         isDeleted.Should().BeFalse();
