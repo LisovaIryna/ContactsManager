@@ -31,7 +31,9 @@ public static class ConfigureServicesExtension
         // add services into IoC container
         services.AddScoped<ICountriesRepository, CountriesRepository>();
         services.AddScoped<IPersonsRepository, PersonsRepository>();
-        services.AddScoped<ICountriesService, CountriesService>();
+        services.AddScoped<ICountriesGetterService, CountriesGetterService>();
+        services.AddScoped<ICountriesAdderService, CountriesAdderService>();
+        services.AddScoped<ICountriesUploaderService, CountriesUploaderService>();
         services.AddScoped<IPersonsGetterService, PersonsGetterServiceWithFewExcelFields>();
         services.AddScoped<PersonsGetterService, PersonsGetterService>();
         services.AddScoped<IPersonsAdderService, PersonsAdderService>();
@@ -41,8 +43,7 @@ public static class ConfigureServicesExtension
 
         if (environment.IsEnvironment("Test") == false)
         {
-            services.AddDbContext<ApplicationDbContext>(
-                options =>
+            services.AddDbContext<ApplicationDbContext>(options =>
                 {
                     options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
                 });

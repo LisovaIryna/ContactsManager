@@ -21,7 +21,7 @@ public interface ICountriesRepository
     Task<List<Country>> GetAllCountries();
 
     /// <summary>
-    /// Returns a country object based on the given country id; otherwise, it should returns null
+    /// Returns a country object based on the given country id; otherwise, it returns null
     /// </summary>
     /// <param name="countryID">CountryID to search</param>
     /// <returns>Matching country or null</returns>

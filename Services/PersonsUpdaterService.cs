@@ -1,27 +1,17 @@
-﻿using System;
-using Entities;
+﻿using Entities;
 using ServiceContracts.DTO;
 using ServiceContracts;
-using System.ComponentModel.DataAnnotations;
 using Services.Helpers;
-using ServiceContracts.Enums;
-using Microsoft.EntityFrameworkCore;
-using CsvHelper;
-using System.Globalization;
-using System.IO;
-using CsvHelper.Configuration;
-using OfficeOpenXml;
 using RepositoryContracts;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using SerilogTimings;
 using Exceptions;
 
 namespace Services;
 
 public class PersonsUpdaterService : IPersonsUpdaterService
 {
-    // private field
+    // private fields
     private readonly IPersonsRepository _personsRepository;
     private readonly ILogger<PersonsGetterService> _logger;
     private readonly IDiagnosticContext _diagnosticContext;
@@ -37,7 +27,7 @@ public class PersonsUpdaterService : IPersonsUpdaterService
     public async Task<PersonResponse> UpdatePerson(PersonUpdateRequest? personUpdateRequest)
     {
         if (personUpdateRequest == null)
-            throw new ArgumentNullException(nameof(Person));
+            throw new ArgumentNullException(nameof(personUpdateRequest));
 
         // validation
         ValidationHelper.ModelValidation(personUpdateRequest);

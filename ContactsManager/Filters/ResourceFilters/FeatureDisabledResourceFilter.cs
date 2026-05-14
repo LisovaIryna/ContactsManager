@@ -18,6 +18,7 @@ public class FeatureDisabledResourceFilter : IAsyncResourceFilter
     {
         // TO DO: before logic
         _logger.LogInformation("{FilterName}.{MethodName} - before", nameof(FeatureDisabledResourceFilter), nameof(OnResourceExecutionAsync));
+        
         if (_isDisabled)
         {
             //context.Result = new NotFoundResult(); // 404 - Not Found

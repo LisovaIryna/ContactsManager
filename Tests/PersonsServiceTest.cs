@@ -3,10 +3,6 @@ using ServiceContracts;
 using ServiceContracts.DTO;
 using ServiceContracts.Enums;
 using Services;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Xunit;
 using Xunit.Abstractions;
 using AutoFixture;
 using FluentAssertions;
@@ -59,12 +55,13 @@ public class PersonsServiceTest
         // Arrange
         PersonAddRequest? personAddRequest = null;
 
-        // Assert
+        // Act
         Func<Task> action = async () =>
         {
-            // Act
             await _personsAdderService.AddPerson(personAddRequest);
         };
+
+        // Assert
         await action.Should().ThrowAsync<ArgumentNullException>();
     }
 
@@ -83,12 +80,13 @@ public class PersonsServiceTest
         _personsRepositoryMock.Setup(temp => temp.AddPerson(It.IsAny<Person>()))
             .ReturnsAsync(person);
 
-        // Assert
+        // Act
         Func<Task> action = async () =>
         {
-            // Act
             await _personsAdderService.AddPerson(personAddRequest);
         };
+
+        // Assert
         await action.Should().ThrowAsync<ArgumentException>();
     }
 
@@ -200,7 +198,7 @@ public class PersonsServiceTest
         };
         List<PersonResponse> person_response_list_expected = persons.Select(temp => temp.ToPersonResponse()).ToList();
 
-        // print person_reponse_list_expected
+        // print person_response_list_expected
         _testOutputHelper.WriteLine("Expected:");
         foreach (PersonResponse person_response_from_add in person_response_list_expected)
         {
@@ -250,7 +248,7 @@ public class PersonsServiceTest
         };
         List<PersonResponse> person_response_list_expected = persons.Select(temp => temp.ToPersonResponse()).ToList();
 
-        // print person_reponse_list_from_add
+        // print person_reponse_list_expected
         _testOutputHelper.WriteLine("Expected:");
         foreach (PersonResponse person_response_from_add in person_response_list_expected)
         {
@@ -263,7 +261,7 @@ public class PersonsServiceTest
         // Act
         List<PersonResponse> person_list_from_search = await _personsGetterService.GetFilteredPersons(nameof(Person.PersonName), "");
 
-        // print person_list_from_get
+        // print person_list_from_search
         _testOutputHelper.WriteLine("Actual:");
         foreach (PersonResponse person_response_from_get in person_list_from_search)
         {
@@ -296,7 +294,7 @@ public class PersonsServiceTest
         };
         List<PersonResponse> person_response_list_expected = persons.Select(temp => temp.ToPersonResponse()).ToList();
 
-        // print person_reponse_list_from_add
+        // print person_reponse_list_expected
         _testOutputHelper.WriteLine("Expected:");
         foreach (PersonResponse person_response_from_add in person_response_list_expected)
         {
@@ -309,7 +307,7 @@ public class PersonsServiceTest
         // Act
         List<PersonResponse> person_list_from_search = await _personsGetterService.GetFilteredPersons(nameof(Person.PersonName), "sa");
 
-        // print person_list_from_get
+        // print person_list_from_search
         _testOutputHelper.WriteLine("Actual:");
         foreach (PersonResponse person_response_from_get in person_list_from_search)
         {
@@ -423,7 +421,7 @@ public class PersonsServiceTest
             .Create();
         PersonResponse person_response_from_add = person.ToPersonResponse();
 
-        PersonUpdateRequest? person_update_request = person_response_from_add.ToPersonUpdateRequest();
+        PersonUpdateRequest person_update_request = person_response_from_add.ToPersonUpdateRequest();
 
         // Act
         var action = async () =>
@@ -447,7 +445,7 @@ public class PersonsServiceTest
             .Create();
         PersonResponse person_response_expected = person.ToPersonResponse();
 
-        PersonUpdateRequest? person_update_request = person_response_expected.ToPersonUpdateRequest();
+        PersonUpdateRequest person_update_request = person_response_expected.ToPersonUpdateRequest();
 
         _personsRepositoryMock.Setup(temp => temp.UpdatePerson(It.IsAny<Person>()))
             .ReturnsAsync(person);

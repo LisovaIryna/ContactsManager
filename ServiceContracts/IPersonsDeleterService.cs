@@ -1,11 +1,7 @@
-﻿using System;
-using ServiceContracts.DTO;
-using ServiceContracts.Enums;
-
-namespace ServiceContracts;
+﻿namespace ServiceContracts;
 
 /// <summary>
-/// Represents business logic for manipulating Person entity
+/// Represents business logic (delete) for manipulating Person entity
 /// </summary>
 public interface IPersonsDeleterService
 {
